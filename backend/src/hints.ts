@@ -1,4 +1,4 @@
-export function multiple(x: number, num: number): string | null {
+export function multiple(x: number, num: number): string {
     if (x % num === 0) {
         return `Is a multiple of ${num}`;
     }
@@ -6,10 +6,11 @@ export function multiple(x: number, num: number): string | null {
     if (num % x === 0) {
         return `${num} is a multiple of x`;
     }
-    return null;
+
+    return '';
 }
 
-export function withinRange(x: number, num: number): string | null {
+export function withinRange(x: number, num: number): string {
     if (x - num <= 10000) {
         return `${num} is within 10000 numbers`;
     }
@@ -26,7 +27,11 @@ export function withinRange(x: number, num: number): string | null {
         return `${num} is within 10 numbers`;
     }
 
-    return null
+    if (x > num) {
+        return `Larger than ${num}`
+    }
+
+    return `Less than ${num}`;
 }
 
 export function contains(x: number, num: number): string[] {
@@ -44,7 +49,7 @@ export function contains(x: number, num: number): string[] {
     return num_unique.sort();
 }
 
-export function length(x: number, num: number): string | null {
+export function length(x: number, num: number): string {
     const strX = x.toString();
     const strNum = num.toString();
 
@@ -52,10 +57,10 @@ export function length(x: number, num: number): string | null {
         return `Is ${strNum.length} digits`;
     }
 
-    return null;
+    return '';
 }
 
-export function gcd(x: number, num: number): string | null {
+export function gcd(x: number, num: number): string {
     const gcd = euclidean(x, num);
 
     if (gcd === 1) {
