@@ -1,0 +1,72 @@
+#root {
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0rem auto;
+  display: grid;
+  grid-template-columns: 30em 32em 30em;
+  column-gap: 10em;
+  height: 50em;
+}
+
+/* .tip-container {
+  text-align: center;
+} */
+
+.tip-text {
+  margin-left: 2rem;
+  margin-right: 2rem;
+  border-color: white;
+  border-radius: 1rem;
+  border: solid;
+  border-spacing: 2rem;
+  margin-top: 5rem;
+}
+.tip-title {
+  text-align: center;
+}
+
+.description {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 1rem;
+  text-align: left;
+}
+
+.centre-container {
+  border-color: #db0404;
+}
+
+.hint-container {
+  text-align: center;
+}
+
+.input-container {
+  margin-top: 8rem;
+  display: grid;
+  grid-template-columns: 12em 14em;
+  padding: 1rem;
+}
+
+.x-is {
+  text-align: right;
+  padding-right: 1rem;
+}
+.x-input {
+  text-align: left;
+}
+
+.x-input[data-placeholder]:empty:after {
+  content:attr(data-placeholder);
+  color:rgb(90, 90, 90);
+}
+
+.button-container {
+  display: grid;
+  grid-template-columns:  10em 10em 10em;
+  gap: 1em;
+}
+
+.numButton {
+  background-color: #cfcfcf;
+
+}
