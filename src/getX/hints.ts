@@ -4,7 +4,7 @@ export function multiple(x: number, num: number): string {
     }
 
     if (num % x === 0) {
-        return `${num} is a multiple of x`;
+        return `${num} is a multiple of X`;
     }
 
     return '';
@@ -64,10 +64,10 @@ export function gcd(x: number, num: number): string {
     const gcd = euclidean(x, num);
 
     if (gcd === 1) {
-        return `${num} is coprime with x`
+        return `${num} is coprime with X`
     }
 
-    return `${num} and x share a greatest common divisor of ${gcd}`
+    return `${num} and X share a greatest common divisor of ${gcd}`
 }
 
 function euclidean(x: number, num: number): number {
