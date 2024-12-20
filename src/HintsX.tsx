@@ -1,7 +1,6 @@
 import { multiple, withinRange, length, gcd, lessOrGreaterThan } from './getX/hints'
-import { makeUnique } from './getX/createHints'
 
-interface hints {
+export interface hints {
     range: string[],
     multiple: string[],
     length: string,
