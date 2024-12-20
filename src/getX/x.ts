@@ -1,6 +1,6 @@
-export function generateX(): string {
+export function generateX(): number {
     const max = 999999;
-    return Math.floor(Math.random() * max).toString();
+    return Math.floor(Math.random() * max);
 }
 
 export function addInput(inputX: string, input: string): string {
@@ -10,10 +10,10 @@ export function addInput(inputX: string, input: string): string {
     return inputX;
 }
 
-export function checkInput(inputX: string, input: string): string {
+export function checkInput(inputX: string, input: string): boolean {
     if (inputX === input) {
-        return `X was ${inputX}`;
+        return true;
     }
 
-    return 'rice';
+    return false;
 }
