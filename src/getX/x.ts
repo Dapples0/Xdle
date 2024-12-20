@@ -10,10 +10,10 @@ export function addInput(inputX: string, input: string): string {
     return inputX;
 }
 
-export function checkInput(inputX: string, input: string): string {
+export function checkInput(inputX: string, input: string): boolean {
     if (inputX === input) {
-        return `X was ${inputX}`;
+        return true;
     }
 
-    return 'rice';
+    return false;
 }

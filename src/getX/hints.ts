@@ -1,4 +1,7 @@
 export function multiple(x: number, num: number): string {
+    if (num === 0 || x === 0) {
+        return '';
+    }
     if (x % num === 0) {
         return `Is a multiple of ${num}`;
     }
@@ -11,20 +14,24 @@ export function multiple(x: number, num: number): string {
 }
 
 export function withinRange(x: number, num: number): string {
-    if (x - num <= 10000) {
-        return `${num} is within 10000 numbers of X`;
-    }
-
-    if (x - num <= 1000) {
-        return `${num} is within 1000 numbers of X`;
+    if (x - num <= 10) {
+        return `${num} is within 10 numbers of X`;
     }
 
     if (x - num <= 100) {
         return `${num} is within 100 numbers of X`;
     }
 
-    if (x - num <= 10) {
-        return `${num} is within 10 numbers of X`;
+    if (x - num <= 100) {
+        return `${num} is within 100 numbers of X`;
+    }
+
+    if (x - num <= 1000) {
+        return `${num} is within 1000 numbers of X`;
+    }
+
+    if (x - num <= 10000) {
+        return `${num} is within 10000 numbers of X`;
     }
     return '';
 }
@@ -64,6 +71,10 @@ export function length(x: number, num: number): string {
 }
 
 export function gcd(x: number, num: number): string {
+    if (num === 0 || x === 0) {
+        return '';
+    }
+
     const gcd = euclidean(x, num);
 
     if (gcd === 1) {
