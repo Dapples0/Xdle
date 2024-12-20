@@ -3,9 +3,19 @@ import './App.css'
 import { generateX, addInput, checkInput } from './getX/x'
 import { multiple, withinRange, contains, length, gcd, lessOrGreaterThan } from './getX/hints'
 import { makeUnique } from './getX/createHints'
+import { HintsX } from './HintsX'
+
+interface hints {
+  range: string[],
+  multiple: string[],
+  length: string,
+  gcd: string[],
+  contains: string[],
+  lessOrGreater: string[],
+}
 
 function App() {
-  const [x] = useState(generateX())
+  const [x] = useState(generateX());
   const [inputX, setInputX] = useState('');
   const [result, setResult] = useState('');
 
@@ -15,103 +25,68 @@ function App() {
 
   const [numAttempts, setNumAttempts] = useState(0);
 
-  const [hintResults, setHintResults] = useState({
-    range: [''],
-    multiple: [''],
+  const [hintResults, setHintResults] = useState<hints>({
+    range: [],
+    multiple: [],
     length: '',
-    gcd: [''],
-    contains: [''],
-    lessOrGreater: [''],
+    gcd: [],
+    contains: [],
+    lessOrGreater: [],
   });
 
-  const [containsY, setContainsY] = useState([''])
+  const [containsY, setContainsY] = useState<string[]>([])
 
-  const enterClick = () => {
+  const hintsClass = new HintsX()
+
+  function enterClick(hintsClass: HintsX) {
+    if (foundX || checkX()) {
+      setFoundX(true);
+      setResult("You found X")
+      return;
+    }
     setNumAttempts(numAttempts + 1);
-    let appendHint = {
-      range: [''],
-      multiple: [''],
+
+    addHints(hintsClass)
+  };
+
+  const checkX = () => {
+    if (checkInput(x.toString(), inputX)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function addHints(hintsClass: HintsX) {
+    let appendHint: hints = {
+      range: [],
+      multiple: [],
       length: '',
-      gcd: [''],
-      contains: [''],
-      lessOrGreater: [''],
+      gcd: [],
+      contains: [],
+      lessOrGreater: [],
     };
 
-    // Range
-    appendHint.range.push(withinRange(x, parseInt(inputX)));
-    const newRangeDiv = document.createElement('div');
-    const rangeDiv = document.getElementById('hint-range')!;
-    for (let r of makeUnique(hintResults.range, appendHint.range)) {
-      newRangeDiv.appendChild(document.createTextNode(r));
-      rangeDiv.appendChild(newRangeDiv);
-    }
+    hintsClass.addHintRange(appendHint, hintResults, x, inputX);
+    hintsClass.addHintEquality(appendHint, hintResults, x, inputX);
+    hintsClass.addHintMultiple(appendHint, hintResults, x, inputX);
+    hintsClass.addHintLength(appendHint, hintResults, x, inputX);
+    hintsClass.addHintGcd(appendHint, hintResults, x, inputX);
 
-    // Equality
-    appendHint.lessOrGreater.push(lessOrGreaterThan(x, parseInt(inputX)));
-    const newEqualityDiv = document.createElement('div');
-    const equalityDiv = document.getElementById('hint-equality')!;
-    for (let e of makeUnique(hintResults.lessOrGreater, appendHint.lessOrGreater)) {
-      newEqualityDiv.appendChild(document.createTextNode(e));
-      equalityDiv.appendChild(newEqualityDiv);
-    }
-
-    // Multiple
-    appendHint.multiple.push(multiple(x, parseInt(inputX)));
-    const newMultipleDiv = document.createElement('div');
-    const multipleDiv = document.getElementById('hint-multiple')!;
-    for (let m of makeUnique(hintResults.multiple, appendHint.multiple)) {
-      newMultipleDiv.appendChild(document.createTextNode(m));
-      multipleDiv.appendChild(newMultipleDiv);
-    }
-
-    // Length
-    if (hintResults.length.length === 0) {
-      appendHint.length = length(x, parseInt(inputX));
-    } else {
-      appendHint.length = hintResults.length;
-    }
-
-    // gcd
-    appendHint.gcd.push(gcd(x, parseInt(inputX)));
-    const newGcdDiv = document.createElement('div');
-    const gcdDiv = document.getElementById('hint-gcd')!;
-    for (let g of makeUnique(hintResults.gcd, appendHint.gcd)) {
-      newGcdDiv.appendChild(document.createTextNode(g));
-      gcdDiv.appendChild(newGcdDiv);
-    }
-
-    // Contains
     let listContains = contains(x, parseInt(inputX)).sort();
     listContains = [...containsY, ...makeUnique(containsY, listContains)]
     setContainsY(listContains.sort());
-    appendHint.contains.push(...listContains);
-    const newContainsDiv = document.createElement('div');
-    const containsDiv = document.getElementById('hint-contains')!;
-    containsDiv.innerHTML = '';
-    let containsStr = "Contains "
-    for (let c of listContains) {
-      if (c.length === 0) {
-        continue;
-      } else if (listContains.indexOf(c) === listContains.length - 1) {
-        containsStr += c;
-      } else {
-        containsStr += c + ", ";
-      }
+    hintsClass.addHintContains(appendHint, listContains);
 
-    }
-    newContainsDiv.appendChild(document.createTextNode(containsStr));
-    containsDiv.appendChild(newContainsDiv);
     setHintResults({
-      range: [...hintResults.range, ...makeUnique(hintResults.range, appendHint.range)],
-      multiple: [...hintResults.multiple, ...makeUnique(hintResults.multiple, appendHint.multiple)],
+      range: [...hintResults.range, ...appendHint.range],
+      multiple: [...hintResults.multiple, ...appendHint.multiple],
       length: appendHint.length,
-      gcd: [...hintResults.gcd, ...makeUnique(hintResults.gcd, appendHint.gcd)],
+      gcd: [...hintResults.gcd, ...appendHint.gcd],
       contains: listContains,
-      lessOrGreater: [...hintResults.lessOrGreater, ...makeUnique(hintResults.lessOrGreater, appendHint.lessOrGreater)]
+      lessOrGreater: [...hintResults.lessOrGreater, ...appendHint.lessOrGreater]
     })
-
-
-  };
+  }
 
 
   useEffect(() => {
@@ -135,32 +110,40 @@ function App() {
         </div>
       </div>
       <div id='centre-container'>
-        <div id="input-container">
-          <h1 id='x-is'>
-            X is
-          </h1>
-          <h1 id='x-input' data-placeholder={placeholderText + '?'}>
-            {inputX}
-          </h1>
+        <div id='top-centre-container'>
+          <div id='results-text'>
+            <p>{result}</p>
+          </div>
         </div>
-        <div id="button-container">
-          <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '1')})} >1</button>
-          <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '2')})} >2</button>
-          <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '3')})} >3</button>
-          <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '4')})} >4</button>
-          <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '5')})} >5</button>
-          <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '6')})} >6</button>
-          <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '7')})} >7</button>
-          <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '8')})} >8</button>
-          <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '9')})} >9</button>
-          <button className="numButton" onClick={() => setInputX((inputX) => inputX.slice(0,-1))} >Back</button>
-          <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '0')})} >0</button>
-          <button className="numButton" onClick={enterClick}>Enter</button>
+        <div id='middle-centre-container'>
+          <div id="input-container">
+            <h1 id='x-is'>
+              X is
+            </h1>
+            <h1 id='x-input' data-placeholder={placeholderText + '?'}>
+              {inputX}
+            </h1>
+          </div>
+          <div id="button-container">
+            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '1')})} >1</button>
+            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '2')})} >2</button>
+            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '3')})} >3</button>
+            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '4')})} >4</button>
+            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '5')})} >5</button>
+            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '6')})} >6</button>
+            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '7')})} >7</button>
+            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '8')})} >8</button>
+            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '9')})} >9</button>
+            <button className="numButton" onClick={() => setInputX((inputX) => inputX.slice(0,-1))} >Back</button>
+            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '0')})} >0</button>
+            <button className="numButton" onClick={() => enterClick(hintsClass)}>Enter</button>
+          </div>
         </div>
-        <div>
-          <p>{x}</p>
-          <p>Attempts: {numAttempts}</p>
-          <p>{result}</p>
+        <div id='bot-centre-container'>
+          <div>
+              <p>{x}</p>
+              <p>Attempts: {numAttempts}</p>
+          </div>
         </div>
       </div>
       <div id='hint-container'>
