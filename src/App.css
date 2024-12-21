@@ -1,19 +1,17 @@
 #root {
-  max-width: 100%;
-  max-height: 100%;
-  margin: 0rem auto;
+  margin: 3rem 4rem 3rem 4rem;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
   display: grid;
-  grid-template-columns: 30rem 32rem 30rem;
-  column-gap: 10rem;
-  height: 50rem;
+  grid-template-columns: 2.5fr 3fr 2.5fr;
+  column-gap: 8rem;
 }
 
 #left-container {
-  border-right: solid;
-  padding-right: 1rem;
-  display: grid;
-  grid-template-rows: 0.5fr 1fr;
-  row-gap: 2rem
+  border-radius: 1rem;
+  background-color: #111111;
+  border-color: white;
 }
 
 #tip-container {
@@ -26,8 +24,6 @@
   margin-top: 5rem;
 }
 
-
-
 #tip-title {
   text-align: center;
 }
@@ -39,17 +35,43 @@
   text-align: left;
 }
 
+#history-container {
+  margin: auto 2rem 1rem 2rem;
+}
+
+#history-title {
+  margin: 1rem auto 0.5rem auto;
+  text-align: center;
+  font-size: 2rem;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
 #centre-container {
-  display: grid;
-  row-gap: 1rem;
-  margin: 0rem auto;
-  grid-template-rows: auto 25rem auto;
+  height: 50rem;
+  border-radius: 1rem;
+  background-color: #252525;
+  border: solid #111111;;
 }
 
 
 #results-text {
   text-align: center;
   height: 7rem;
+}
+
+#middle-centre-container {
+  border-top: solid white;
+  height: 25rem;
+}
+
+#bot-centre-container {
+  height: 15rem;
+}
+
+#attempts-container {
+  margin: auto 2rem auto 2rem;
+  text-align: center;
 }
 
 #input-container {
@@ -72,37 +94,42 @@
 }
 
 #button-container {
+  margin: auto 2rem auto 2rem;
+}
+
+#button-items {
   display: grid;
-  grid-template-columns:  10fr 10fr 10fr;
-  width: 30rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   gap: 1rem;
 }
 
+
 .numButton {
   background-color: #d8d8d8;
-
+  min-width: 2rem;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-#enterButton {
-  background-color: #d8d8d8;
-
-}
-
-#attempts-container {
-  text-align: center;
-}
 
 #right-container {
-  border-left: solid;
-  padding-left: 1rem;
+  border-radius: 1rem;
+  background-color: #111111;
+  border-color: white;
 }
 
 #hint-text {
-  padding-left: 2rem
+  margin: auto 2em auto 2em;
 }
 
 #hint-title {
   text-align: center;
   margin-top: 5rem;
   border-bottom: double white;
+}
+
+#hint-description {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }

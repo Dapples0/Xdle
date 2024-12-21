@@ -131,9 +131,7 @@ function App() {
           </div>
         </div>
         <div id='history-container'>
-          <div id='history-title'>
-            <h2>History</h2>
-          </div>
+          <div id='history-title'>History</div>
           <div id='history-text'></div>
         </div>
       </div>
@@ -153,18 +151,20 @@ function App() {
             </h1>
           </div>
           <div id="button-container">
-            <button className="numButton" onClick={() => enterInput(inputX, '1')} >1</button>
-            <button className="numButton" onClick={() => enterInput(inputX, '2')} >2</button>
-            <button className="numButton" onClick={() => enterInput(inputX, '3')} >3</button>
-            <button className="numButton" onClick={() => enterInput(inputX, '4')} >4</button>
-            <button className="numButton" onClick={() => enterInput(inputX, '5')} >5</button>
-            <button className="numButton" onClick={() => enterInput(inputX, '6')} >6</button>
-            <button className="numButton" onClick={() => enterInput(inputX, '7')} >7</button>
-            <button className="numButton" onClick={() => enterInput(inputX, '8')} >8</button>
-            <button className="numButton" onClick={() => enterInput(inputX, '9')} >9</button>
-            <button className="numButton" onClick={() => removeInput(inputX)} >Back</button>
-            <button className="numButton" onClick={() => enterInput(inputX, '0')} >0</button>
-            <button className="numButton" onClick={() => enterClick(hintsClass)}>Enter</button>
+            <div id="button-items">
+              <button className="numButton" onClick={() => enterInput(inputX, '1')} >1</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '2')} >2</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '3')} >3</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '4')} >4</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '5')} >5</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '6')} >6</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '7')} >7</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '8')} >8</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '9')} >9</button>
+              <button className="numButton" onClick={() => removeInput(inputX)} >Back</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '0')} >0</button>
+              <button className="numButton" onClick={() => enterClick(hintsClass)}>Enter</button>
+            </div>
           </div>
         </div>
         <div id='bot-centre-container'>
