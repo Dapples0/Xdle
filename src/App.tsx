@@ -5,10 +5,18 @@ import { contains} from './getX/hints'
 import { makeUnique } from './getX/createHints'
 import { HintsX, hints } from './HintsX'
 
+const victoryMessage = "You found X!";
+const victoryComment1 = "On your first attempt too!";
+const victoryComment2 = "nice";
+const victoryComment3 = "Well that took you a while...";
+const victoryComment4 = "Only had to go through all possible options!";
+
+
 function App() {
   const [x] = useState(generateX());
   const [inputX, setInputX] = useState('');
   const [result, setResult] = useState('');
+  const [comment, setComment] = useState('');
 
   const [placeholderText, setPlaceholderText] = useState(generateX().toString());
 
@@ -38,7 +46,8 @@ function App() {
 
     if (foundX || validateX()) {
       setFoundX(true);
-      setResult("You found X");
+      setResult(victoryMessage);
+      addComment();
       return;
     }
 
@@ -58,6 +67,7 @@ function App() {
   const appendAttemptHistory = () => {
     const newAttemptDiv = document.createElement('div');
     const attemptDiv = document.getElementById('history-text')!;
+    newAttemptDiv.setAttribute('class', 'history-text-container');
     newAttemptDiv.appendChild(document.createTextNode(inputX));
     attemptDiv.appendChild(newAttemptDiv);
     setNumAttempts(numAttempts + 1);
@@ -111,6 +121,18 @@ function App() {
     setInputX(input.slice(0,-1));
   }
 
+  function addComment() {
+    if (numAttempts === 0) {
+      setComment(victoryComment1);
+    } else if (numAttempts === 69) {
+      setComment(victoryComment2);
+    } else if (numAttempts >= 50) {
+      setComment(victoryComment3);
+    } else if (numAttempts >= 999999) {
+      setComment(victoryComment4);
+    }
+  }
+
   useEffect(() => {
     const interval = setInterval(() => {
       setPlaceholderText(generateX().toString());
@@ -137,9 +159,8 @@ function App() {
       </div>
       <div id='centre-container'>
         <div id='top-centre-container'>
-          <div id='results-text'>
-            <h1>{result}</h1>
-          </div>
+          <div id='results-text'>{result}</div>
+          <div id='results-comment'>{comment}</div>
         </div>
         <div id='middle-centre-container'>
           <div id="input-container">
@@ -180,7 +201,7 @@ function App() {
             <h2>hints</h2>
           </div>
           <div id='hint-description'>
-            <div id='hint-length'>{hintResults.length}</div>
+            <div id='hint-text-container'>{hintResults.length}</div>
             <div id='hint-contains'></div>
             <div id='hint-range'></div>
             <div id='hint-equality'></div>
@@ -195,6 +216,5 @@ function App() {
   )
 
 }
-
 
 export default App

@@ -14,12 +14,13 @@ export class HintsX {
 
   public addHintRange(appendHint: hints, hintResults: hints, x:number, inputX:string) {
     const rangeResult = withinRange(x, parseInt(inputX));
-    if (hintResults.range.includes(rangeResult)) {
+    if (hintResults.range.includes(rangeResult) || rangeResult.length === 0) {
       return;
     }
     appendHint.range.push(rangeResult);
     const newRangeDiv = document.createElement('div');
     const rangeDiv = document.getElementById('hint-range')!;
+    newRangeDiv.setAttribute('class', 'hint-text-container');
     newRangeDiv.appendChild(document.createTextNode(rangeResult));
     rangeDiv.appendChild(newRangeDiv);
 
@@ -33,19 +34,20 @@ export class HintsX {
       appendHint.lessOrGreater.push(equalityResult);
       const newEqualityDiv = document.createElement('div');
       const equalityDiv = document.getElementById('hint-equality')!;
-
+      newEqualityDiv.setAttribute('class', 'hint-text-container');
       newEqualityDiv.appendChild(document.createTextNode(equalityResult));
       equalityDiv.appendChild(newEqualityDiv);
     }
 
     public addHintMultiple(appendHint: hints, hintResults: hints, x:number, inputX:string) {
       const multipleResult = multiple(x, parseInt(inputX));
-      if (hintResults.lessOrGreater.includes(multipleResult)) {
+      if (hintResults.lessOrGreater.includes(multipleResult) || multipleResult.length === 0) {
         return;
       }
       appendHint.multiple.push(multipleResult);
       const newMultipleDiv = document.createElement('div');
       const multipleDiv = document.getElementById('hint-multiple')!;
+      newMultipleDiv.setAttribute('class', 'hint-text-container');
       newMultipleDiv.appendChild(document.createTextNode(multipleResult));
       multipleDiv.appendChild(newMultipleDiv);
 
@@ -59,14 +61,16 @@ export class HintsX {
         }
 
     }
+
     public addHintGcd(appendHint: hints, hintResults: hints, x:number, inputX:string) {
       const gcdResult = gcd(x, parseInt(inputX));
-      if (hintResults.lessOrGreater.includes(gcdResult)) {
+      if (hintResults.lessOrGreater.includes(gcdResult) || gcdResult.length === 0) {
         return;
       }
       appendHint.gcd.push(gcdResult);
       const newGcdDiv = document.createElement('div');
       const gcdDiv = document.getElementById('hint-gcd')!;
+      newGcdDiv.setAttribute('class', 'hint-text-container');
       newGcdDiv.appendChild(document.createTextNode(gcdResult));
       gcdDiv.appendChild(newGcdDiv);
 
@@ -89,6 +93,7 @@ export class HintsX {
         }
 
       }
+      newContainsDiv.setAttribute('class', 'hint-text-container');
       newContainsDiv.appendChild(document.createTextNode(containsStr));
       containsDiv.appendChild(newContainsDiv);
     }
