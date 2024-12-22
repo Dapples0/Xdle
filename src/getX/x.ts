@@ -4,6 +4,10 @@ export function generateX(): number {
 }
 
 export function addInput(inputX: string, input: string): string {
+    if (inputX === "0") {
+        return inputX
+    }
+
     if (inputX.length < 6) {
         return inputX + input;
     }

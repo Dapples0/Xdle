@@ -1,23 +1,22 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { generateX, addInput, checkInput } from './getX/x'
-import { multiple, withinRange, contains, length, gcd, lessOrGreaterThan } from './getX/hints'
+import { contains} from './getX/hints'
 import { makeUnique } from './getX/createHints'
-import { HintsX } from './HintsX'
+import { HintsX, hints } from './HintsX'
 
-interface hints {
-  range: string[],
-  multiple: string[],
-  length: string,
-  gcd: string[],
-  contains: string[],
-  lessOrGreater: string[],
-}
+const victoryMessage = "You found X!";
+const victoryComment1 = "On your first attempt too!";
+const victoryComment2 = "nice";
+const victoryComment3 = "Well that took you a while...";
+const victoryComment4 = "Only had to go through all possible options!";
+
 
 function App() {
   const [x] = useState(generateX());
   const [inputX, setInputX] = useState('');
   const [result, setResult] = useState('');
+  const [comment, setComment] = useState('');
 
   const [placeholderText, setPlaceholderText] = useState(generateX().toString());
 
@@ -34,27 +33,45 @@ function App() {
     lessOrGreater: [],
   });
 
-  const [containsY, setContainsY] = useState<string[]>([])
+  const [containsY, setContainsY] = useState<string[]>([]);
 
-  const hintsClass = new HintsX()
+  const [inputHistory, setInputHistory] = useState(['']);
+
+  const hintsClass = new HintsX();
 
   function enterClick(hintsClass: HintsX) {
-    if (foundX || checkX()) {
-      setFoundX(true);
-      setResult("You found X")
+    if (inputX.length === 0 || inputHistory.includes(inputX)) {
       return;
     }
-    setNumAttempts(numAttempts + 1);
 
-    addHints(hintsClass)
+    if (foundX || validateX()) {
+      setFoundX(true);
+      setResult(victoryMessage);
+      addComment();
+      return;
+    }
+
+    appendAttemptHistory();
+
+    addHints(hintsClass);
   };
 
-  const checkX = () => {
+  const validateX = () => {
     if (checkInput(x.toString(), inputX)) {
       return true;
     }
 
     return false;
+  }
+
+  const appendAttemptHistory = () => {
+    const newAttemptDiv = document.createElement('div');
+    const attemptDiv = document.getElementById('history-text')!;
+    newAttemptDiv.setAttribute('class', 'history-text-container');
+    newAttemptDiv.appendChild(document.createTextNode(inputX));
+    attemptDiv.appendChild(newAttemptDiv);
+    setNumAttempts(numAttempts + 1);
+    setInputHistory([...inputHistory, inputX]);
   }
 
   function addHints(hintsClass: HintsX) {
@@ -88,6 +105,33 @@ function App() {
     })
   }
 
+  function enterInput(input:string, add:string) {
+    if (foundX) {
+      return;
+    }
+
+    setInputX(addInput(input, add));
+  }
+
+  function removeInput(input:string) {
+    if (foundX) {
+      return;
+    }
+
+    setInputX(input.slice(0,-1));
+  }
+
+  function addComment() {
+    if (numAttempts === 0) {
+      setComment(victoryComment1);
+    } else if (numAttempts === 69) {
+      setComment(victoryComment2);
+    } else if (numAttempts >= 50) {
+      setComment(victoryComment3);
+    } else if (numAttempts >= 999999) {
+      setComment(victoryComment4);
+    }
+  }
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -98,8 +142,8 @@ function App() {
 
   return (
     <>
-      <div id='tip-container'>
-        <div id='tip-text'>
+      <div id='left-container'>
+        <div id='tip-container'>
           <div id='tip-title'>
             <h2>how to play</h2>
           </div>
@@ -108,51 +152,56 @@ function App() {
             <p>X will be an integer between 0 and 999,999 (inclusive). Incorrect X will give hints.</p>
           </div>
         </div>
+        <div id='history-container'>
+          <div id='history-title'>History</div>
+          <div id='history-text'></div>
+        </div>
       </div>
       <div id='centre-container'>
         <div id='top-centre-container'>
-          <div id='results-text'>
-            <p>{result}</p>
-          </div>
+          <div id='results-text'>{result}</div>
+          <div id='results-comment'>{comment}</div>
         </div>
         <div id='middle-centre-container'>
           <div id="input-container">
             <h1 id='x-is'>
-              X is
+              &nbsp;X is&nbsp;
             </h1>
-            <h1 id='x-input' data-placeholder={placeholderText + '?'}>
+            <h1 id='x-input' data-placeholder={placeholderText}>
               {inputX}
             </h1>
           </div>
           <div id="button-container">
-            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '1')})} >1</button>
-            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '2')})} >2</button>
-            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '3')})} >3</button>
-            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '4')})} >4</button>
-            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '5')})} >5</button>
-            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '6')})} >6</button>
-            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '7')})} >7</button>
-            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '8')})} >8</button>
-            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '9')})} >9</button>
-            <button className="numButton" onClick={() => setInputX((inputX) => inputX.slice(0,-1))} >Back</button>
-            <button className="numButton" onClick={() => setInputX((inputX) => {return addInput(inputX, '0')})} >0</button>
-            <button className="numButton" onClick={() => enterClick(hintsClass)}>Enter</button>
+            <div id="button-items">
+              <button className="numButton" onClick={() => enterInput(inputX, '1')} >1</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '2')} >2</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '3')} >3</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '4')} >4</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '5')} >5</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '6')} >6</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '7')} >7</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '8')} >8</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '9')} >9</button>
+              <button className="numButton" onClick={() => removeInput(inputX)} >Back</button>
+              <button className="numButton" onClick={() => enterInput(inputX, '0')} >0</button>
+              <button className="numButton" onClick={() => enterClick(hintsClass)}>Enter</button>
+            </div>
           </div>
         </div>
         <div id='bot-centre-container'>
-          <div>
+          <div id='attempts-container'>
               <p>{x}</p>
-              <p>Attempts: {numAttempts}</p>
+              <h1>Attempts: {numAttempts}</h1>
           </div>
         </div>
       </div>
-      <div id='hint-container'>
+      <div id='right-container'>
         <div id='hint-text'>
           <div id='hint-title'>
             <h2>hints</h2>
           </div>
           <div id='hint-description'>
-            <div id='hint-length'>{hintResults.length}</div>
+            <div id='hint-text-container'>{hintResults.length}</div>
             <div id='hint-contains'></div>
             <div id='hint-range'></div>
             <div id='hint-equality'></div>
@@ -167,6 +216,5 @@ function App() {
   )
 
 }
-
 
 export default App
