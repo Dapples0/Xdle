@@ -1,3 +1,6 @@
+# Xdle
+Like Contexto and Wordle but you find a number instead of a word!
+
 # Installation and setting up
 1. Clone the repository into your device:
     ```sh
