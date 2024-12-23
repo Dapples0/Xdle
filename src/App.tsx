@@ -149,7 +149,7 @@ function App() {
           </div>
           <div id='tip-description'>
             <p>Find X.</p>
-            <p>X will be an integer between 0 and 999,999 (inclusive). Incorrect X will give hints.</p>
+            <p>X will be an integer between 0 and 99,999 (inclusive). Incorrect X will give hints.</p>
           </div>
         </div>
         <div id='history-container'>
@@ -190,7 +190,6 @@ function App() {
         </div>
         <div id='bot-centre-container'>
           <div id='attempts-container'>
-              <p>{x}</p>
               <h1>Attempts: {numAttempts}</h1>
           </div>
         </div>
@@ -201,7 +200,7 @@ function App() {
             <h2>hints</h2>
           </div>
           <div id='hint-description'>
-            <div id='hint-text-container'>{hintResults.length}</div>
+            <div className='hint-text-container'>{hintResults.length}</div>
             <div id='hint-contains'></div>
             <div id='hint-range'></div>
             <div id='hint-equality'></div>
