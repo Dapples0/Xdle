@@ -1,5 +1,6 @@
 # Xdle
 Like Contexto and Wordle but you find a number instead of a word!
+Made using Typescript and React.
 
 # Installation and setting up
 1. Clone the repository into your device:
