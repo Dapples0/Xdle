@@ -13,8 +13,16 @@
     ```
 
 # Running the frontend
-To run frontend:
-    ```sh
-    npm run dev
-    ```
-    Afterwards, open the local host site link that will appear in the terminal.
+To run the frontend, run the following line
+  ```sh
+  npm run dev
+  ```
+
+  Afterwards, open the local host site link that will appear in the terminal.
+
+
+# (Self-Reflection) Future additions and improvements
+1. Backend to store daily number.
+2. Improved frontend design for better responsiveness.
+3. Have hints section be more clearer.
+4. Add victory screen instead of appearing on top of page.
