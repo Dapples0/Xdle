@@ -14,23 +14,24 @@ export function multiple(x: number, num: number): string {
 }
 
 export function withinRange(x: number, num: number): string {
-    if (x - num <= 10) {
+    const equality = Math.abs(x - num);
+    if (equality <= 10) {
         return `${num} is within 10 numbers of X`;
     }
 
-    if (x - num <= 100) {
+    if (equality <= 100) {
         return `${num} is within 100 numbers of X`;
     }
 
-    if (x - num <= 100) {
+    if (equality <= 100) {
         return `${num} is within 100 numbers of X`;
     }
 
-    if (x - num <= 1000) {
+    if (equality <= 1000) {
         return `${num} is within 1000 numbers of X`;
     }
 
-    if (x - num <= 10000) {
+    if (equality <= 10000) {
         return `${num} is within 10000 numbers of X`;
     }
     return '';
