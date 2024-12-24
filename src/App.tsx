@@ -12,17 +12,14 @@ const victoryComment4 = "Only had to go through all possible options!";
 
 
 function App() {
+  // Initialise state variables
   const [x] = useState(generateX());
   const [inputX, setInputX] = useState('');
   const [result, setResult] = useState('');
   const [comment, setComment] = useState('');
-
   const [placeholderText, setPlaceholderText] = useState(generateX().toString());
-
   const [foundX, setFoundX] = useState(false);
-
   const [numAttempts, setNumAttempts] = useState(0);
-
   const [hintResults, setHintResults] = useState<hints>({
     range: [],
     multiple: [],
@@ -31,16 +28,19 @@ function App() {
     contains: [],
     lessOrGreater: [],
   });
-
   const [containsY, setContainsY] = useState<string[]>([]);
-
   const [inputHistory, setInputHistory] = useState(['']);
 
+  /**
+   * Checks if input results in victory or not and processes result accordingly
+   */
   function enterClick() {
+    // Error handling for empty input or input has already been done
     if (inputX.length === 0 || inputHistory.includes(inputX)) {
       return;
     }
 
+    // On successful input set state to victory
     if (foundX || validateX()) {
       setFoundX(true);
       setResult(victoryMessage);
@@ -48,20 +48,28 @@ function App() {
       return;
     }
 
+    // Add input to history
     appendAttemptHistory();
 
+    // Add hints
     addHints();
   };
 
-  const validateX = () => {
-    if (checkInput(x.toString(), inputX)) {
+  /**
+   * Validates inputX solution
+   */
+  function validateX() {
+    if (x.toString() === inputX) {
       return true;
     }
 
     return false;
   }
 
-  const appendAttemptHistory = () => {
+  /**
+   * Adds hint on incorrect input
+   */
+  function appendAttemptHistory() {
     const newAttemptDiv = document.createElement('div');
     const attemptDiv = document.getElementById('history-text')!;
     newAttemptDiv.setAttribute('class', 'history-text-container');
@@ -71,6 +79,9 @@ function App() {
     setInputHistory([...inputHistory, inputX]);
   }
 
+  /**
+   * Appends hints to div
+   */
   function addHints() {
     const appendHint: hints = {
       range: [],
@@ -81,17 +92,18 @@ function App() {
       lessOrGreater: [],
     };
 
+    // Creates respective divs for hints
     addHintRange(appendHint, hintResults, x, inputX);
     addHintEquality(appendHint, hintResults, x, inputX);
     addHintMultiple(appendHint, hintResults, x, inputX);
     addHintLength(appendHint, hintResults, x, inputX);
     addHintGcd(appendHint, hintResults, x, inputX);
-
     let listContains = contains(x, parseInt(inputX)).sort();
     listContains = [...containsY, ...makeUnique(containsY, listContains)]
     setContainsY(listContains.sort());
     addHintContains(appendHint, listContains);
 
+    // Updates hint state variable
     setHintResults({
       range: [...hintResults.range, ...appendHint.range],
       multiple: [...hintResults.multiple, ...appendHint.multiple],
@@ -102,7 +114,11 @@ function App() {
     })
   }
 
+  /**
+   * Checks state before input concatenation
+   */
   function enterInput(input:string, add:string) {
+    // No inputs can be done on victory state
     if (foundX) {
       return;
     }
@@ -110,6 +126,9 @@ function App() {
     setInputX(addInput(input, add));
   }
 
+  /**
+   * Handles input concatenation
+   */
   function addInput(inputX: string, input: string): string {
     if (inputX === "0") {
         return inputX
@@ -121,15 +140,9 @@ function App() {
     return inputX;
   }
 
-  function checkInput(inputX: string, input: string): boolean {
-    if (inputX === input) {
-        return true;
-    }
-
-    return false;
-  }
-
-
+  /**
+   * Handles removing last input
+   */
   function removeInput(input:string) {
     if (foundX) {
       return;
@@ -138,6 +151,9 @@ function App() {
     setInputX(input.slice(0,-1));
   }
 
+  /**
+   * Appends victory comment div with a new message under specific attempt conditions
+   */
   function addComment() {
     if (numAttempts === 0) {
       setComment(victoryComment1);
@@ -150,6 +166,9 @@ function App() {
     }
   }
 
+  /**
+   * Creates a new distinct intersection array from two arrays
+   */
   function makeUnique(array: string[], append: string[]): string[] {
     const newArray: string[] = [];
     append.forEach((hint) => {
