@@ -1,3 +1,9 @@
+/**
+ * Returns a multiple hint string
+ * @param {number} x - the generated x number
+ * @param {number} num - inputted number
+ * @returns multiple hint string
+ */
 export function multiple(x: number, num: number): string {
     if (num === 0 || x === 0) {
         return '';
@@ -12,7 +18,12 @@ export function multiple(x: number, num: number): string {
 
     return '';
 }
-
+/**
+ * Returns a range hint string
+ * @param {number} x - the generated x number
+ * @param {number} num - inputted number
+ * @returns range hint string
+ */
 export function withinRange(x: number, num: number): string {
     const equality = Math.abs(x - num);
     if (equality <= 10) {
@@ -37,6 +48,12 @@ export function withinRange(x: number, num: number): string {
     return '';
 }
 
+/**
+ * Returns a equality hint string
+ * @param {number} x - the generated x number
+ * @param {number} num - inputted number
+ * @returns equality hint string
+ */
 export function lessOrGreaterThan(x: number, num: number): string {
     if (x > num) {
         return `Larger than ${num}`
@@ -45,13 +62,19 @@ export function lessOrGreaterThan(x: number, num: number): string {
     return `Less than ${num}`;
 }
 
+/**
+ * Returns a contains hint string
+ * @param {number} x - the generated x number
+ * @param {number} num - inputted number
+ * @returns contains hint string array
+ */
 export function contains(x: number, num: number): string[] {
-    let strX = x.toString();
+    const strX = x.toString();
     const strNum = num.toString().split("");
 
-    let num_unique : string[] = [];
+    const num_unique : string[] = [];
 
-    for (let digit of strNum) {
+    for (const digit of strNum) {
         if (!(num_unique.includes(digit)) && strX.includes(digit)) {
             num_unique.push(digit);
         }
@@ -60,6 +83,12 @@ export function contains(x: number, num: number): string[] {
     return num_unique.sort();
 }
 
+/**
+ * Returns a length hint string
+ * @param {number} x - the generated x number
+ * @param {number} num - inputted number
+ * @returns length hint string
+ */
 export function length(x: number, num: number): string {
     const strX = x.toString();
     const strNum = num.toString();
@@ -71,6 +100,12 @@ export function length(x: number, num: number): string {
     return '';
 }
 
+/**
+ * Returns a gcd hint string
+ * @param {number} x - the generated x number
+ * @param {number} num - inputted number
+ * @returns gcd hint string
+ */
 export function gcd(x: number, num: number): string {
     if (num === 0 || x === 0) {
         return '';
@@ -85,6 +120,12 @@ export function gcd(x: number, num: number): string {
     return `${num} and X share a greatest common divisor of ${gcd}`
 }
 
+/**
+ * Finds gcd of two numbers
+ * @param {number} x - the generated x number
+ * @param {number} num - inputted number/remainder
+ * @returns num or recursively calls itself
+ */
 function euclidean(x: number, num: number): number {
     const remainder = x % num;
     if (remainder === 0) {
