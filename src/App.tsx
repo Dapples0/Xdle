@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { generateX, addInput, checkInput } from './getX/x'
-import { contains} from './getX/hints'
-import { makeUnique } from './getX/createHints'
-import { HintsX, hints } from './HintsX'
+import { generateX } from './functions/x'
+import { contains} from './functions/hints'
+import { addHintContains, addHintEquality, addHintGcd, addHintLength, addHintMultiple, addHintRange, hints } from './hintsDiv'
 
 const victoryMessage = "You found X!";
 const victoryComment1 = "On your first attempt too!";
@@ -37,9 +36,7 @@ function App() {
 
   const [inputHistory, setInputHistory] = useState(['']);
 
-  const hintsClass = new HintsX();
-
-  function enterClick(hintsClass: HintsX) {
+  function enterClick() {
     if (inputX.length === 0 || inputHistory.includes(inputX)) {
       return;
     }
@@ -53,7 +50,7 @@ function App() {
 
     appendAttemptHistory();
 
-    addHints(hintsClass);
+    addHints();
   };
 
   const validateX = () => {
@@ -74,8 +71,8 @@ function App() {
     setInputHistory([...inputHistory, inputX]);
   }
 
-  function addHints(hintsClass: HintsX) {
-    let appendHint: hints = {
+  function addHints() {
+    const appendHint: hints = {
       range: [],
       multiple: [],
       length: '',
@@ -84,16 +81,16 @@ function App() {
       lessOrGreater: [],
     };
 
-    hintsClass.addHintRange(appendHint, hintResults, x, inputX);
-    hintsClass.addHintEquality(appendHint, hintResults, x, inputX);
-    hintsClass.addHintMultiple(appendHint, hintResults, x, inputX);
-    hintsClass.addHintLength(appendHint, hintResults, x, inputX);
-    hintsClass.addHintGcd(appendHint, hintResults, x, inputX);
+    addHintRange(appendHint, hintResults, x, inputX);
+    addHintEquality(appendHint, hintResults, x, inputX);
+    addHintMultiple(appendHint, hintResults, x, inputX);
+    addHintLength(appendHint, hintResults, x, inputX);
+    addHintGcd(appendHint, hintResults, x, inputX);
 
     let listContains = contains(x, parseInt(inputX)).sort();
     listContains = [...containsY, ...makeUnique(containsY, listContains)]
     setContainsY(listContains.sort());
-    hintsClass.addHintContains(appendHint, listContains);
+    addHintContains(appendHint, listContains);
 
     setHintResults({
       range: [...hintResults.range, ...appendHint.range],
@@ -113,6 +110,26 @@ function App() {
     setInputX(addInput(input, add));
   }
 
+  function addInput(inputX: string, input: string): string {
+    if (inputX === "0") {
+        return inputX
+    }
+
+    if (inputX.length < 5) {
+        return inputX + input;
+    }
+    return inputX;
+  }
+
+  function checkInput(inputX: string, input: string): boolean {
+    if (inputX === input) {
+        return true;
+    }
+
+    return false;
+  }
+
+
   function removeInput(input:string) {
     if (foundX) {
       return;
@@ -131,6 +148,17 @@ function App() {
     } else if (numAttempts >= 999999) {
       setComment(victoryComment4);
     }
+  }
+
+  function makeUnique(array: string[], append: string[]): string[] {
+    const newArray: string[] = [];
+    append.forEach((hint) => {
+        if (!array.includes(hint)) {
+            newArray.push(hint);
+        }
+    });
+
+    return newArray;
   }
 
   useEffect(() => {
@@ -184,7 +212,7 @@ function App() {
               <button className="numButton" onClick={() => enterInput(inputX, '9')} >9</button>
               <button className="numButton" onClick={() => removeInput(inputX)} >Back</button>
               <button className="numButton" onClick={() => enterInput(inputX, '0')} >0</button>
-              <button className="numButton" onClick={() => enterClick(hintsClass)}>Enter</button>
+              <button className="numButton" onClick={() => enterClick()}>Enter</button>
             </div>
           </div>
         </div>

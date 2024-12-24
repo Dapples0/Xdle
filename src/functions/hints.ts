@@ -46,12 +46,12 @@ export function lessOrGreaterThan(x: number, num: number): string {
 }
 
 export function contains(x: number, num: number): string[] {
-    let strX = x.toString();
+    const strX = x.toString();
     const strNum = num.toString().split("");
 
-    let num_unique : string[] = [];
+    const num_unique : string[] = [];
 
-    for (let digit of strNum) {
+    for (const digit of strNum) {
         if (!(num_unique.includes(digit)) && strX.includes(digit)) {
             num_unique.push(digit);
         }
